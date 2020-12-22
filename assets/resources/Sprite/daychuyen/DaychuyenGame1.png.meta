@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "38a9e04e-8b58-44a1-98fc-b1669dc1d7ea",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 1280,
+  "height": 720,
+  "platformSettings": {},
+  "subMetas": {
+    "DaychuyenGame1": {
+      "ver": "1.0.4",
+      "uuid": "7931e4d9-ed96-4738-a0ed-9ec8e9a8224e",
+      "rawTextureUuid": "38a9e04e-8b58-44a1-98fc-b1669dc1d7ea",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1280,
+      "height": 720,
+      "rawWidth": 1280,
+      "rawHeight": 720,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "levelTable",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.5,
+  "sample": 60,
+  "speed": 0.3,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "position": [
+        {
+          "frame": 0,
+          "value": [
+            0,
+            424.071,
+            0
+          ]
+        },
+        {
+          "frame": 0.11666666666666667,
+          "value": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 0.38333333333333336,
+          "value": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 0.5,
+          "value": [
+            0,
+            425,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "events": []
+}
