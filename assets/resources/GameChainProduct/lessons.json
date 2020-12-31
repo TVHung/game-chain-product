@@ -1,0 +1,22 @@
+{
+	"lessons" : {
+		"bai1": {
+            "lessonTrue" : ["num1", "num2", "num3"],
+            "typeBoxTrue": [1, 1, 2],
+            "lesonFalse" : ["num4", "num5", "num6", "num7", "num8", "num9"],
+            "typeBoxFalse": [1, 2, 1, 1, 1, 2]
+        },
+
+        "lesson2": {
+        },
+
+        "lesson3": {
+            
+        },
+        "lesson4": {
+            
+        }
+	},
+
+	"lessonCount" : 29
+}
