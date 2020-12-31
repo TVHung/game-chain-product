@@ -9,25 +9,26 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-       
+        
     },
-
-    // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         
     },
 
-    start () {
-
+    runChain(speed){
+        cc.tween(this.node)
+            .to(speed, { position: cc.v2(window.screenWidth*(-1), -160)})
+            .start()
     },
 
-    turnWheel(speed){
-        var ani = this.getComponent(cc.Animation);
-        var wheel = ani.play();
-        wheel.repeatCount = Infinity;
-        wheel.speed = speed;
+    Remove_Node(){
+        this.node.destroy();
     },
 
-    // update (dt) {},
+    update (dt) {
+        if(this.node.x <= window.screenWidth*(-1)){
+            this.Remove_Node();
+        }
+    },
 });
