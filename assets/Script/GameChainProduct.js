@@ -1,34 +1,40 @@
-var Level = cc.Enum({
+var Level = cc.Enum({               //so luong thung ơ moi level
     level1: 40,
     level2: 80,
     level3: 120
 });
 
-var Speed = cc.Enum({
-    speed1: 4,
-    speed2: 3,
-    speed3: 2,
-    speedWheel1: 0.5,
+//doan duong la 1800px => v = 1800/4 
+//v1 = 360, v2 = 480, v3 = 640
+var Speed = cc.Enum({               //tốc độ thùng hàng             
+    speed1: 5,
+    speed2: 3.75,
+    speed3: 2.8125,
+    speedWheel1: 0.5,               //toc do banh xe
     speedWheel2: 0.7,
     speedWheel3: 1
 });
 
-var Duration = cc.Enum({
+//khoang cach ca thung là 240
+var Duration = cc.Enum({                //thoi gian cho cua thùng hàng
     duration1: 2/3,
     duration2: 0.5,
-    duration3: 1/3
+    duration3: 0.375
 });
 
-var speedChain = cc.Enum({
+//360 480 640
+//timewait = 1280/v
+//speed = 
+var speedChain = cc.Enum({              //toc do day chuyenf và thời gian chờ đợi     
     speedChain1 : 7.11111,
     timeWait1   : 3.5555,
     speedChain2 : 5.33333,
     timeWait2   : 1.01, 
-    speedChain3 : 3.55555,
-    timeWait3   : 1.7777
+    speedChain3 : 4,
+    timeWait3   : 2
 });
 
-var numChains = cc.Enum({
+var numChains = cc.Enum({               //so luong day chuyen o moi level
     numChain1: 7,
     numChain2: 24,
     numChain3: Infinity
@@ -38,35 +44,31 @@ cc.Class({
     extends: cc.Component,
 
     properties: {
-        objectPrefab: {
+        objectPrefab: {             //thung hang
             default: null,
             type: cc.Prefab
         },
-        arrWheel: {
+        arrWheel: {                 //mang banh xe
             default: [],
             type: cc.Prefab
         },
-        wheelPrefab: {
+        wheelPrefab: {              //banh xe
             default: null,
             type: cc.Prefab
         },
-        objectChainPrefab: {
+        objectChainPrefab: {        //day chuyen
             default: null,
             type: cc.Prefab
         },
-        power: {
+        power: {                    //thanh nang luong
             default: null,
             type: cc.Node
-        },
-        arrPower: {
-            default: [],
-            type: cc.Prefab
         },
         check: {
             default: null,
             type: cc.Prefab         
         },
-        countDown: {
+        countDown: {                //dem nguoc
             default: null,
             type: cc.Prefab
         },
@@ -74,40 +76,40 @@ cc.Class({
             default: null,
             type: cc.SpriteAtlas
         },
-        wheelParent: {
+        wheelParent: {              //layer cua banh xe
             default: null,
             type: cc.Node
         },
-        chainsParent: {
+        chainsParent: {             //layer day chuyen
             default: null,
             type: cc.Node
         },
-        chainsParent2: {
+        chainsParent2: {            
             default: null,
             type: cc.Node
         },
-        productParent: {
+        productParent: {            //layer thung hang
             default: null,
             type: cc.Node
         },
-        character: {
+        character: {                //nhan vat dong hanh
             default: null,
             type: cc.Node
         },
-        score:{
+        score:{                     //diem
             default: null,
             type: cc.Label
         },
 
-        tableResult:{
+        tableResult:{               //bang ket qua
             default: null,
             type: cc.Node
         },
-        scoreTable:{
+        scoreTable:{                //bang diem
             default: null,
             type: cc.Label
         },
-        tableResume:{
+        tableResume:{               //bang tam dung
             default: null,
             type: cc.Node
         },
@@ -139,8 +141,8 @@ cc.Class({
         // cc.director.getCollisionManager().enabledDebugDraw = true;
         cc.debug.setDisplayStats(false);
 
-        window.lesson = this.lesson;
-        window.scoreGlobal = 0;
+        window.lesson = this.lesson;                        //key
+        window.scoreGlobal = 0;             
         window._isGameOver = false;
         window.screenWidth = 1280;
         window.screenHeight = 720;
@@ -149,7 +151,7 @@ cc.Class({
         this._speedWheel = Speed.speedWheel1;
         this._speed = Speed.speed1;
         this._speedChain = speedChain.speedChain1;
-        this._timeWait = speedChain.timeWait1;
+        this._timeWait = speedChain.timeWait1;                  //time chờ của dây chuyền
         this._duration = Duration.duration1;
 
         arrPositionWheel = new Array();
@@ -167,17 +169,17 @@ cc.Class({
             this.character.getComponent(cc.Animation).play('monsterOut');
             this.startTimeRoller();
         }, 2500);
-        chainfirst = this.spawnNewChain(0, -160);
+        chainfirst = this.spawnNewChain(0, -160);                   //dây chuyền ban đầu
         chainSecond = this.spawnNewChain(window.screenWidth, -160);
         this.tableResume.active = false;
     },
 
-    createComponent(){
+    createComponent(){              //tao ra các bánh xe và set vị trí
         this.arrPositionWheel = [{'x':-427, 'y':-218}, {'x':-347, 'y':-218}, {'x':-267, 'y':-218}, {'x':-187, 'y':-218}, {'x':-107, 'y':-218}, {'x':-27, 'y':-218}, {'x':63, 'y':-218}, {'x':143, 'y':-218}, {'x':223, 'y':-218}, {'x':303, 'y':-218}, {'x':383, 'y':-218}, {'x':463, 'y':-218}, {'x':543, 'y':-218}, {'x':623, 'y':-218}];
         this.spawnNewWheel(this.arrPositionWheel);
     },
 
-    runWheels(){
+    runWheels(){                    //ham run 2 dây chuyền đầu và bánh xe
         chainfirst.getComponent("ObjectChain").runChain(this._speedChain/2);
         chainSecond.getComponent("ObjectChain").runChain(this._speedChain);
         var i = 0;
@@ -187,24 +189,24 @@ cc.Class({
         }
     },
 
-    runChains(){
+    runChains(){                //chạy các dây chuyền ứng với mỗi level
         if(this._level === 1){
             this.schedule(()=> {  
                 if (window._isGameOver === false) {
-                    var chain = this.spawnNewChain(window.screenWidth, -160);
-                    chain.getComponent("ObjectChain").runChain(this._speedChain);
+                    var chain = this.spawnNewChain(window.screenWidth, -160);               //khởi tạo
+                    chain.getComponent("ObjectChain").runChain(this._speedChain);           //chạy
                 }
             }, this._timeWait, numChains.numChain1);
         }else if(this._level === 2){
             var chainfirst = this.spawnNewChain(0, -160);
-            chainfirst.parent = this.chainsParent2;
+            chainfirst.parent = this.chainsParent2;                     
             chainfirst.getComponent("ObjectChain").runChain(this._speedChain/2);
             this.schedule(()=> {  
                 if (window._isGameOver === false) {
                     var chain = this.spawnNewChain(window.screenWidth, -160);
                     chain.getComponent("ObjectChain").runChain(this._speedChain);
                 }
-            }, this._timeWait, numChains.numChain2);
+            }, this._timeWait, numChains.numChain2);                        //chạy và thời gian chờ nhau
         }else{
             var chainfirst = this.spawnNewChain(0, -160);
             chainfirst.parent = this.chainsParent2;
@@ -218,7 +220,7 @@ cc.Class({
         }
     },
 
-    startTimeRoller () {
+    startTimeRoller () {                        //hàm đếm ngược
         var times = 3; 
         this.schedule(()=> {    
             if (times !== 0) {
@@ -247,8 +249,8 @@ cc.Class({
         }, 1, 3);  
     },
 
-    countDownScheduleCallBack () {
-        if(this._countProduct >= Level.level1 && this._countProduct < Level.level2){
+    countDownScheduleCallBack () {                      //các thông số qua các level khác nhau
+        if(this._countProduct >= Level.level1 && this._countProduct < Level.level2){        
             if(this._checkCovu1 === true){
                 this._checkCovu1 = false;
                 this.character.getComponent(cc.Animation).play('monsterIn');
@@ -322,7 +324,7 @@ cc.Class({
         }
     },
 
-    createChainProduct(){
+    createChainProduct(){                           //tao chuỗi sản phẩm
         this.schedule(()=> {  
             if (window._isGameOver === false && this._nextLevel === true) {
                 this.spawnNewProduct();
@@ -331,15 +333,15 @@ cc.Class({
         }, this._duration, Level.level1);  
     },
 
-    spawnNewProduct() {
+    spawnNewProduct() {                                     //tạo ra thùng hàng mới
         var newProduct = cc.instantiate(this.objectPrefab);
         this.node.addChild(newProduct);
-        newProduct.setPosition(720, -100);
+        newProduct.setPosition(1080, -100);
         newProduct.parent = this.productParent;
         newProduct.getComponent("Object").runObjectProduct(this._speed);
     },
 
-    spawnNewWheel(arrPos) {
+    spawnNewWheel(arrPos) {                                 //tạo ra bánh xe 
         var i = 0;
         while(arrPos[i] != null){
             var newWheel = cc.instantiate(this.wheelPrefab);
@@ -350,7 +352,7 @@ cc.Class({
             i++;
         } 
     },
-    spawnNewChain(x, y){
+    spawnNewChain(x, y){                                    //tạo dây chuyền
         var newChain = cc.instantiate(this.objectChainPrefab);
         this.node.addChild(newChain);
         newChain.setPosition(x, y);
@@ -358,7 +360,7 @@ cc.Class({
         return newChain;
     },
 
-    onFinishGameEvent(){
+    onFinishGameEvent(){                                    //kết thúc game
         cc.director.getCollisionManager().enabled = false;
         this.tableResult.getComponent(cc.Animation).play();
         this.scoreTable.string = "Score: " + window.scoreGlobal;
